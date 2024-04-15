@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jovelAsirot.U5W3D1.entities.Employee;
 import jovelAsirot.U5W3D1.exceptions.UnauthorizedException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,13 +12,21 @@ import java.util.Date;
 @Component
 public class JwtTools {
 
+    @Value("${jwt.secret}")
+    private String secret;
+
     public String createToken(Employee employee) {
         Date currentDate = new Date(System.currentTimeMillis());
 
-        return Jwts.builder().issuedAt(currentDate).expiration( new Date(System.currentTimeMillis() +  1000 * 60 * 60 * 24 * 7)).subject(String.valueOf(employee.getId())).signWith(Keys.hmacShaKeyFor(secret.ge)).compact()
+        return Jwts.builder()
+                .issuedAt(currentDate)
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
+                .subject(String.valueOf(employee.getId()))
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .compact();
     }
 
-    public void verifyToken(String token){
+    public void verifyToken(String token) {
         try {
             Jwts.parser()
                     .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
