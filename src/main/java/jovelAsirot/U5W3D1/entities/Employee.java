@@ -1,9 +1,7 @@
 package jovelAsirot.U5W3D1.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jovelAsirot.U5W3D1.enums.Role;
 import lombok.*;
 
 @Getter
@@ -31,12 +29,16 @@ public class Employee {
 
     private String profileImage;
 
-    public Employee(String username, String name, String surname, String email, String password, String profileImage) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Employee(String username, String name, String surname, String email, String password, String profileImage, Role role) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.profileImage = profileImage;
+        this.role = role;
     }
 }
