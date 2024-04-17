@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,9 @@ public class EmployeeService {
     @Autowired
     private Cloudinary cloudinaryUploader;
 
+    @Autowired
+    private PasswordEncoder bcrypt;
+
     public Page<Employee> getAll(int page, int size, String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
@@ -38,7 +42,7 @@ public class EmployeeService {
                     throw new BadRequestException("Email " + employee.getEmail() + " is already being used (ᗒᗣᗕ)՞ ");
                 }
         );
-        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), payload.password(), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname());
+        Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email(), bcrypt.encode(payload.password()), "https://ui-avatars.com/api/?name=" + payload.name() + "+" + payload.surname(), payload.role());
 
         return eDAO.save(newEmployee);
     }

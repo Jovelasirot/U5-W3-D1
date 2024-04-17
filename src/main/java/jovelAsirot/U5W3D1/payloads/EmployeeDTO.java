@@ -2,7 +2,9 @@ package jovelAsirot.U5W3D1.payloads;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jovelAsirot.U5W3D1.enums.Role;
 
 public record EmployeeDTO(@NotEmpty(message = "The username is required")
                           String username,
@@ -17,6 +19,10 @@ public record EmployeeDTO(@NotEmpty(message = "The username is required")
                           String email,
                           @NotEmpty(message = "The password is required")
                           @Size(min = 8, message = "The password can't be less than eight characters characters")
-                          String password
+                          String password,
+                          @NotEmpty(message = "The role i required")
+                          @Pattern(regexp = "MODERATOR|USER", message = "Invalid role, choose between MODERATOR or USER")
+                          Role role
+
 ) {
 }
