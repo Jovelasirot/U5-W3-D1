@@ -32,13 +32,13 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Employee(String username, String name, String surname, String email, String password, String profileImage, Role role) {
+    public Employee(String username, String name, String surname, String email, String password, String profileImage, String role) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.profileImage = profileImage;
-        this.role = role;
+        this.role = Role.valueOf(role);
     }
 }

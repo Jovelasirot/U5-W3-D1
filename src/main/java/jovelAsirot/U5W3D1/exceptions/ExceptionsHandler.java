@@ -1,6 +1,7 @@
 package jovelAsirot.U5W3D1.exceptions;
 
 
+import jakarta.validation.UnexpectedTypeException;
 import jovelAsirot.U5W3D1.payloads.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,6 +53,13 @@ public class ExceptionsHandler {
     public ErrorResponseDTO handleIllegalArgumentException(IllegalArgumentException ex) {
         ex.printStackTrace();
         return new ErrorResponseDTO("Missing a value", LocalDateTime.now());
+    }
+
+    @ExceptionHandler(UnexpectedTypeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO handleUnexpected(UnexpectedTypeException ex) {
+        ex.printStackTrace();
+        return new ErrorResponseDTO("Choose a role MODERATOR or USER", LocalDateTime.now());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
